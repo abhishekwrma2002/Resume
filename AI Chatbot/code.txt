@@ -1,0 +1,171 @@
+from tkinter import *
+from PIL import ImageTk,Image
+import pyttsx3
+import datetime
+import speech_recognition as sr
+import wikipedia
+import webbrowser
+import os
+
+print("RIO is Starting!!")
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[0].id)
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def wishMe():
+    hour = int(datetime.datetime.now().hour)
+    if hour>=0 and hour<12:
+        speak("Good Morning!")
+
+    elif hour>=12 and hour<18:
+        speak("GOOD AFTERNOON!")
+
+    else:
+        speak("GOOD EVENING!")
+
+def takeCommand():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        r.pause_threshold = 1
+        audio = r.listen(source)
+
+    try:
+        print("Recognizing...")  
+        query = r.recognize_google(audio, language='en-in')
+        print(f"User said:{query}\n")
+
+    except Exception as e:
+        # print(e)
+        print("Say that again please...")
+        return "None"
+    return query
+
+class Widget:
+    def _init_(self):
+        root=Tk()
+        root.title('RIO : AI Voice Assistant')
+        root.geometry('750x480')
+
+        img=ImageTk.PhotoImage(Image.open(r"C:\AIVOICE.png"))
+        panel=Label(root,image=img)
+        panel.pack()
+
+
+        img1=ImageTk.PhotoImage(Image.open(r"C:\button1.png"),)
+        Btn1=Button(root,image=img1,bd=0,bg='#222321',activebackground='#222321',command=self.clicked)
+        Btn1.place(x=30,y=150)
+
+        
+        img2=ImageTk.PhotoImage(Image.open(r"C:\button2.png"))
+        Btn2=Button(root,image=img2,bd=0,bg='#222321',activebackground='#222321',command=root.destroy)
+        Btn2.place(x=570,y=150)
+        root.mainloop()
+        
+    def clicked(self):
+        print("Working.....!!")
+        query=takeCommand()
+        query=query.lower()
+
+        if 'wikipedia' in query:  #if wikipedia found in the query then this block will be executed
+            speak('Searching Wikipedia...')
+            query = query.replace("wikipedia", "")
+            results = wikipedia.summary(query, sentences=2) 
+            speak("According to Wikipedia")
+            print(results)
+            speak(results)
+
+        elif 'open youtube' in query:
+            print("opening youtube sir...")
+            speak('opening youtube sir...')
+            webbrowser.open("youtube.com")
+
+        elif 'open google' in query:
+            print("opening google sir")
+            speak('opening google sir...')
+            webbrowser.open("google.com")
+
+        elif 'open whatsapp' in query:
+            print("opening whatsapp sir...")
+            speak('opening whatsapp sir...')
+            webbrowser.open("whatsapp.com")
+
+        elif 'open netflix' in query:
+            print("opening netflix sir...")
+            speak('opening netflix sir...')
+            webbrowser.open("netflix.com")
+
+        elif 'open spotify' in query:
+            print("opening spotify sir...")
+            speak('opening spotify sir...')
+            webbrowser.open("spotify.com")
+
+        elif 'open twitter' in query:
+            print("opening twitter sir...")
+            speak('opening twitter sir...')
+            webbrowser.open("twitter.com")
+
+       
+
+        elif 'open amazon' in query:
+            print("opening amazon sir")
+            speak('opening amazon sir...')
+            webbrowser.open("amazon.com")
+
+        elif 'open flipkart' in query:
+            print("opening flipkart sir...")
+            speak('opening flipkart sir...''')
+            webbrowser.open("flipkart.com")
+
+        elif 'open coursera' in query:
+            print("opening cousera sir...")
+            speak('opening couresra sir...')
+            webbrowser.open("couresra.com")
+            
+
+        elif 'open udemy' in query:
+            print("opening udemy sir...")
+            speak('opening udemy sir...')
+            webbrowser.open("udemy.com")   
+
+        elif 'open gmail' in query:
+            print("opening gmail sir...")
+            speak('opening gmail sir...')
+            webbrowser.open("gmail.com")
+
+        elif 'open instagram' in query:
+            print("opening instagram sir...")
+            speak('opening instagram sir...')
+            webbrowser.open("instagram.com") 
+
+        elif 'open facebook' in query:
+            print("opening facebook sir...")
+            speak('opening facebook sir...') 
+            webbrowser.open("facebook.com")
+
+        elif 'open github' in query:
+            print("opening github sir...")
+            speak('opening github...')
+            webbrowser.open("github.com")
+        
+        elif 'the time' in query:
+            strTime = datetime.datetime.now().strftime("%H:%M:%S")
+            print(f"SIR, THE TIME IS {strTime}")
+            speak(f" Sir, The time is {strTime}")
+
+        elif 'play music' in query:
+            speak('playing music now...')
+            music_dir = "C:\\MUSIC"
+            songs = os.listdir(music_dir)  
+            os.startfile(os.path.join(music_dir, songs[0]))
+        
+    
+
+if _name_ =="_main_":
+    speak("RIO is Starting!!")
+    wishMe()
+    widget=Widget()
